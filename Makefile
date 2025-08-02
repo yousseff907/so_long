@@ -5,24 +5,11 @@
 #                                                     +:+ +:+         +:+      #
 #    By: yitani <yitani@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/06/14 12:51:51 by yitani            #+#    #+#              #
-#    Updated: 2025/06/20 17:18:24 by yitani           ###   ########.fr        #
+#    Created: 2025/07/28 23:06:14 by yitani            #+#    #+#              #
+#    Updated: 2025/07/28 23:06:23 by yitani           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: yitani <yitani@student.42.fr>              +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/06/14 12:51:51 by yitani            #+#    #+#              #
-#    Updated: 2025/06/20 17:16:08 by yitani           ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
-# Make everything silent (including recursive makes)
 MAKEFLAGS += -s
 
 NAME      := so_long
@@ -67,8 +54,12 @@ $(NAME): $(MLX_LIB) $(OBJS)
 
 $(MLX_LIB):
 	@echo "→ Building MiniLibX… 📚"
-	@$(MAKE) -C $(MLX_DIR) > /dev/null 2>&1
-	@echo "✔  MiniLibX built successfully 📖."
+		@if $(MAKE) -C $(MLX_DIR) > /dev/null 2>&1; then \
+		echo "✔  MiniLibX built successfully 📖."; \
+	else \
+		echo "❌ MiniLibX build failed. Trying without redirection..."; \
+		$(MAKE) -C $(MLX_DIR); \
+	fi
 
 %.o: %.c
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@ > /dev/null 2>&1
